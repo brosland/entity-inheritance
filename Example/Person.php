@@ -5,7 +5,7 @@ namespace Example;
 
 use DateTimeImmutable;
 
-class Person implements OwnerInterface
+class Person
 {
     /**
      * @var OwnerId
@@ -26,16 +26,23 @@ class Person implements OwnerInterface
 
 
     public function __construct(
-        Owner $owner,
         string $firstName,
         string $lastName,
+        string $address,
+        string $email,
         DateTimeImmutable $birthday
     ) {
-        $this->id = $owner->getId();
-        $this->owner = $owner;
+        $this->id = OwnerId::create();
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->birthday = $birthday;
+        $this->owner = new Owner(
+            $this->id,
+            OwnerType::PERSON(),
+            $this->getFullName(),
+            $address,
+            $email
+        );
     }
 
     public function getId(): OwnerId
@@ -51,7 +58,7 @@ class Person implements OwnerInterface
     public function setFirstName(string $firstName): void
     {
         $this->firstName = $firstName;
-        $this->owner->setName(sprintf('%s %s', $this->firstName, $this->lastName));
+        $this->owner->setName($this->getFullName());
     }
 
     public function getLastName(): string
@@ -62,7 +69,12 @@ class Person implements OwnerInterface
     public function setLastName(string $lastName): void
     {
         $this->lastName = $lastName;
-        $this->owner->setName(sprintf('%s %s', $this->firstName, $this->lastName));
+        $this->owner->setName($this->getFullName());
+    }
+
+    public function getFullName(): string
+    {
+        return sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
     public function getBirthday(): DateTimeImmutable
@@ -76,11 +88,6 @@ class Person implements OwnerInterface
     }
 
     // Owner ******************************************************************/
-
-    public function getType(): OwnerType
-    {
-        return OwnerType::PERSON();
-    }
 
     public function getName(): string
     {

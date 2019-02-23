@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Example;
 
-class Company implements OwnerInterface
+class Company
 {
     /**
      * @var OwnerId
@@ -22,15 +22,24 @@ class Company implements OwnerInterface
      */
     private $website;
 
+
     public function __construct(
-        Owner $owner,
+        string $name,
         string $vat,
+        string $address,
+        string $email,
         string $website
     ) {
-        $this->id = $owner->getId();
-        $this->owner = $owner;
+        $this->id = OwnerId::create();
         $this->vat = $vat;
         $this->website = $website;
+        $this->owner = new Owner(
+            $this->id,
+            OwnerType::COMPANY(),
+            $name,
+            $address,
+            $email
+        );
     }
 
     public function getId(): OwnerId
@@ -59,11 +68,6 @@ class Company implements OwnerInterface
     }
 
     // Owner ******************************************************************/
-
-    public function getType(): OwnerType
-    {
-        return OwnerType::COMPANY();
-    }
 
     public function getName(): string
     {

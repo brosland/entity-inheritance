@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Example;
 
-class Owner implements OwnerInterface
+class Owner
 {
     /**
      * @var OwnerId
