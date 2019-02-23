@@ -12,30 +12,32 @@ class Person
      */
     private $id;
     /**
-     * @var Owner
-     */
-    private $owner;
-    /**
      * @var string
      */
-    private $firstName, $lastName;
+    private $firstName, $lastName, $address, $email;
     /**
      * @var DateTimeImmutable
      */
     private $birthday;
+    /**
+     * @var Owner
+     */
+    private $owner;
 
 
     public function __construct(
         string $firstName,
         string $lastName,
+        DateTimeImmutable $birthday,
         string $address,
-        string $email,
-        DateTimeImmutable $birthday
+        string $email
     ) {
         $this->id = OwnerId::create();
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->birthday = $birthday;
+        $this->address = $address;
+        $this->email = $email;
         $this->owner = new Owner(
             $this->id,
             OwnerType::PERSON(),
@@ -87,30 +89,30 @@ class Person
         $this->birthday = $birthday;
     }
 
-    // Owner ******************************************************************/
-
-    public function getName(): string
-    {
-        return $this->owner->getName();
-    }
-
     public function getAddress(): string
     {
-        return $this->owner->getAddress();
+        return $this->address;
     }
 
     public function setAddress(string $address): void
     {
+        $this->address = $address;
         $this->owner->setAddress($address);
     }
 
     public function getEmail(): string
     {
-        return $this->owner->getEmail();
+        return $this->email;
     }
 
     public function setEmail(string $email): void
     {
+        $this->email = $email;
         $this->owner->setEmail($email);
+    }
+
+    public function getOwner(): Owner
+    {
+        return $this->owner;
     }
 }

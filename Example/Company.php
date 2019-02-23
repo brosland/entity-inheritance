@@ -10,17 +10,17 @@ class Company
      */
     private $id;
     /**
+     * @var string
+     */
+    private $name, $vat;
+    /**
+     * @var string
+     */
+    private $address, $email, $website;
+    /**
      * @var Owner
      */
     private $owner;
-    /**
-     * @var string
-     */
-    private $vat;
-    /**
-     * @var string
-     */
-    private $website;
 
 
     public function __construct(
@@ -31,7 +31,10 @@ class Company
         string $website
     ) {
         $this->id = OwnerId::create();
+        $this->name = $name;
         $this->vat = $vat;
+        $this->address = $address;
+        $this->email = $email;
         $this->website = $website;
         $this->owner = new Owner(
             $this->id,
@@ -47,6 +50,17 @@ class Company
         return $this->id;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+        $this->owner->setName($name);
+    }
+
     public function getVat(): string
     {
         return $this->vat;
@@ -55,6 +69,28 @@ class Company
     public function setVat(string $vat): void
     {
         $this->vat = $vat;
+    }
+
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): void
+    {
+        $this->address = $address;
+        $this->owner->setAddress($address);
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+        $this->owner->setEmail($email);
     }
 
     public function getWebsite(): string
@@ -67,35 +103,8 @@ class Company
         $this->website = $website;
     }
 
-    // Owner ******************************************************************/
-
-    public function getName(): string
+    public function getOwner(): Owner
     {
-        return $this->owner->getName();
-    }
-
-    public function setName(string $name): void
-    {
-        $this->owner->setName($name);
-    }
-
-    public function getAddress(): string
-    {
-        return $this->owner->getAddress();
-    }
-
-    public function setAddress(string $address): void
-    {
-        $this->owner->setAddress($address);
-    }
-
-    public function getEmail(): string
-    {
-        return $this->owner->getEmail();
-    }
-
-    public function setEmail(string $email): void
-    {
-        $this->owner->setEmail($email);
+        return $this->owner;
     }
 }
